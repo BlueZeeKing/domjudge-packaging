@@ -47,15 +47,15 @@ URL=https://www.domjudge.org/releases/domjudge-${VERSION}.tar.gz
 FILE=domjudge.tar.gz
 section_end
 
-section_start "Download DOMjudge tarball"
-echo "[..] Downloading DOMjudge version ${VERSION}..."
-if ! wget --quiet "${URL}" -O ${FILE}
-then
-	echo "[!!] DOMjudge version ${VERSION} file not found on https://www.domjudge.org/releases"
-	exit 1
-fi
-echo "[ok] DOMjudge version ${VERSION} downloaded as domjudge.tar.gz"; echo
-section_end
+# section_start "Download DOMjudge tarball"
+# echo "[..] Downloading DOMjudge version ${VERSION}..."
+# if ! wget --quiet "${URL}" -O ${FILE}
+# then
+# 	echo "[!!] DOMjudge version ${VERSION} file not found on https://www.domjudge.org/releases"
+# 	exit 1
+# fi
+# echo "[ok] DOMjudge version ${VERSION} downloaded as domjudge.tar.gz"; echo
+# section_end
 
 section_start "Build domserver container"
 echo "[..] Building Docker image for domserver..."
@@ -71,7 +71,7 @@ section_end
 
 section_start "Build judgehost container (judging chroot)"
 echo "[..] Building Docker image for judgehost chroot..."
-docker build -t "${NAMESPACE}/default-judgehost-chroot:${VERSION}" -f judgehost/Dockerfile.chroot .
+docker buildx build --push --platform linux/arm64 -t "${NAMESPACE}/default-judgehost-chroot:${VERSION}" -f judgehost/Dockerfile.chroot .
 echo "[ok] Done building Docker image for judgehost chroot"
 section_end
 

@@ -6,5 +6,5 @@ then
 fi
 docker_tag="$1"
 
-docker build -t "${docker_tag}" -f domserver/Dockerfile .
+docker buildx build --push --platform linux/arm64 -t "${docker_tag}" -f domserver/Dockerfile .
 

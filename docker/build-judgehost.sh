@@ -7,7 +7,7 @@ fi
 docker_tag="$1"
 
 # Build the builder
-docker build -t "${docker_tag}-build" -f judgehost/Dockerfile.build .
+docker buildx build --platform linux/arm64 -t "${docker_tag}-build" -f judgehost/Dockerfile.build .
 
 # Build chroot
 builder_name=$(echo "${docker_tag}" | sed 's/[^a-zA-Z0-9_-]/-/g')
@@ -19,4 +19,4 @@ docker rm -f "${builder_name}"
 docker rmi "${docker_tag}-build"
 
 # Build actual judgehost
-docker build -t "${docker_tag}" -f judgehost/Dockerfile .
+docker buildx build --push --platform linux/arm64 -t "${docker_tag}" -f judgehost/Dockerfile .
